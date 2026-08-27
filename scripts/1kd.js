@@ -420,11 +420,11 @@ function help() {
 Arklum command tool
 
 Usage:
-  node scripts/ark.js check
-  node scripts/ark.js update
-  node scripts/ark.js repair
-  node scripts/ark.js rollback
-  node scripts/ark.js reset-system --yes
+  node scripts/1kd.js check
+  node scripts/1kd.js update
+  node scripts/1kd.js repair
+  node scripts/1kd.js rollback
+  node scripts/1kd.js reset-system --yes
 
 npm shortcuts:
   npm run upd
@@ -433,10 +433,10 @@ npm shortcuts:
 
 Optional:
   npm link
-  ark check
-  ark update
-  ark repair
-  ark rollback
+  1kd check
+  1kd update
+  1kd repair
+  1kd rollback
 `);
 }
 

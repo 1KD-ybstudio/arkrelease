@@ -2,7 +2,7 @@ const path = require('path');
 const { execFile } = require('child_process');
 const { logger, registerCommand } = require('../bot');
 
-const ARK_CLI = path.join(process.cwd(), 'scripts', 'ark.js');
+const ARK_CLI = path.join(process.cwd(), 'scripts', '1kd.js');
 
 function runArk(args, timeoutMs = 180000) {
   return new Promise((resolve, reject) => {

@@ -1,20 +1,20 @@
 {
   "name": "arklum",
-  "version": "3.0.14",
+  "version": "3.0.15",
   "private": true,
   "scripts": {
     "prestart": "node scripts/ensure-deps.js",
     "start": "node bot.js",
     "postinstall": "node -e \"try{require('fs').chmodSync('scripts/ark.js', 0o755)}catch(e){}\"",
-    "ark": "node scripts/ark.js",
     "upd": "node scripts/ark.js update",
     "update": "node scripts/ark.js update",
     "repair": "node scripts/ark.js repair",
     "rollback": "node scripts/ark.js rollback",
-    "ship": "node scripts/ship.js"
+    "ship": "node scripts/ship.js",
+    "1kd": "node scripts/1kd.js"
   },
   "bin": {
-    "ark": "./scripts/ark.js"
+    "1kd": "./scripts/1kd.js"
   },
   "dependencies": {
     "adm-zip": "^0.6.0"
