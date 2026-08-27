@@ -10,7 +10,8 @@
     "upd": "node scripts/ark.js update",
     "update": "node scripts/ark.js update",
     "repair": "node scripts/ark.js repair",
-    "rollback": "node scripts/ark.js rollback"
+    "rollback": "node scripts/ark.js rollback",
+    "ship": "node scripts/ship.js"
   },
   "bin": {
     "ark": "./scripts/ark.js"
