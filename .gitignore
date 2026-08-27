@@ -1,3 +1,7 @@
 node_modules/
-.arklum_sys/
-*.enc
+.arklum_sys/tokens.enc
+.arklum_sys/backups/
+.arklum_sys/staging/
+.arklum_sys/update-clone/
+.arklum_sys/update/*.zip
+*.log

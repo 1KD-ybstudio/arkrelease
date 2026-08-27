@@ -187,7 +187,7 @@ function loadExpectedCredits() {
 let creditsOk = false;
 try {
   const html = fs.readFileSync('static/arklum.html', 'utf8').replace(/&amp;/g, '&');
-  if (html.includes(loadExpectedCredits())) creditsOk = true;
+  if (!fs.existsSync(path.join('.arklum_sys', 'credits.enc')) || html.includes(loadExpectedCredits())) creditsOk = true;
 } catch {}
 if (!creditsOk) {
   process.exit(1);
@@ -195,8 +195,8 @@ if (!creditsOk) {
 
 function loadEncryptedTokens() {
   if (!fs.existsSync(KEY_FILE) || !fs.existsSync(TOKENS_ENC)) {
-    console.error('CRITICAL: System folder missing or incomplete. Bot cannot start.');
-    process.exit(1);
+    console.log('[ARKLUM] No saved tokens yet — waiting for first login via dashboard.');
+    return [];
   }
   const key = fs.readFileSync(KEY_FILE);
   const data = fs.readFileSync(TOKENS_ENC);
