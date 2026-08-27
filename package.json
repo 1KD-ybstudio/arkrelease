@@ -1,6 +1,6 @@
 {
   "name": "arklum",
-  "version": "3.0.12",
+  "version": "3.0.13",
   "private": true,
   "scripts": {
     "prestart": "node scripts/ensure-deps.js",
@@ -14,5 +14,8 @@
   },
   "bin": {
     "ark": "./scripts/ark.js"
+  },
+  "dependencies": {
+    "adm-zip": "^0.6.0"
   }
 }
