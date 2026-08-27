@@ -1,27 +1,18 @@
 {
   "name": "arklum",
-  "version": "3.0.10",
-  "description": "Arklum - by 1KD",
-  "main": "bot.js",
+  "version": "3.0.12",
   "private": true,
   "scripts": {
     "prestart": "node scripts/ensure-deps.js",
     "start": "node bot.js",
-    "dev": "node --trace-warnings bot.js"
+    "postinstall": "node -e \"try{require('fs').chmodSync('scripts/ark.js', 0o755)}catch(e){}\"",
+    "ark": "node scripts/ark.js",
+    "upd": "node scripts/ark.js update",
+    "update": "node scripts/ark.js update",
+    "repair": "node scripts/ark.js repair",
+    "rollback": "node scripts/ark.js rollback"
   },
-  "engines": {
-    "node": ">=18.0.0"
-  },
-  "dependencies": {
-    "@discordjs/voice": "^0.16.0",
-    "adm-zip": "^0.5.14",
-    "discord.js": "^14.16.3",
-    "express": "^4.19.2",
-    "libsodium-wrappers": "^0.7.15",
-    "opentype.js": "^2.0.0",
-    "opusscript": "^0.1.1",
-    "pureimage": "^0.3.8",
-    "socket.io": "^4.7.5",
-    "sodium-native": "^5.1.0"
+  "bin": {
+    "ark": "./scripts/ark.js"
   }
 }
