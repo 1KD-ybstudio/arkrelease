@@ -1,12 +1,12 @@
 {
   "name": "arklum",
-  "version": "3.0.5",
+  "version": "3.0.10",
   "description": "Arklum - by 1KD",
   "main": "bot.js",
   "private": true,
   "scripts": {
     "prestart": "node scripts/ensure-deps.js",
-    "start": "node scripts/supervise.js",
+    "start": "node bot.js",
     "dev": "node --trace-warnings bot.js"
   },
   "engines": {
