@@ -1,0 +1,63 @@
+{
+  "name": "Kittypink",
+  "colors": {
+    "bg-deep": "#ffb3e9",
+    "primary": "#d474ae",
+    "secondary": "#b8b8ff",
+    "text": "#fafafa",
+    "text-muted": "#a1a1aa"
+  },
+  "sidebar": {
+    "color": "#121418"
+  },
+  "glass": {
+    "blur": 0,
+    "vibrancy": 50,
+    "opacity": 0.2,
+    "shadow": 12
+  },
+  "chat": {
+    "bg": "#c489bf",
+    "text": "#fafafa",
+    "opacity": 0.9,
+    "blur": 0,
+    "glow": 0
+  },
+  "corner_tl": {
+    "opacity": 1.0,
+    "blur": 0
+  },
+  "corner_br": {
+    "opacity": 1.0,
+    "blur": 0
+  },
+  "header_left": {
+    "bg": "#181a1f",
+    "opacity": 0.8,
+    "blur": 0,
+    "glow": 0
+  },
+  "header_right": {
+    "bg": "#181a1f",
+    "opacity": 0.8,
+    "blur": 0,
+    "glow": 0
+  },
+  "loading": {
+    "opacity": 1.0,
+    "blur": 0
+  },
+  "assets": {
+    "loadingScreen": "assets/Kittypink/Kittypink-loading.gif",
+    "sidebarLogo": "assets/Kittypink/Kittypink-sidebar.gif",
+    "cornerTL": "assets/Kittypink/Kittypink-cornertl.gif",
+    "cornerBR": "assets/Kittypink/Kittypink-cornerbr.gif",
+    "headerLeft": "assets/Kittypink/Kittypink-headerleft.gif",
+    "headerRight": "assets/Kittypink/Kittypink-headerright.gif"
+  },
+  "background": {
+    "overlay": "#000000",
+    "opacity": 0.4,
+    "blur": 0
+  }
+}

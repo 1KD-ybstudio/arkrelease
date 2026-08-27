@@ -1,0 +1,63 @@
+{
+  "name": "Pocoyo",
+  "colors": {
+    "bg-deep": "#8987e6",
+    "primary": "#4b82fa",
+    "secondary": "#4a4aff",
+    "text": "#fafafa",
+    "text-muted": "#a1a1aa"
+  },
+  "sidebar": {
+    "color": "#121418"
+  },
+  "glass": {
+    "blur": 12,
+    "vibrancy": 180,
+    "opacity": 0.8,
+    "shadow": 32
+  },
+  "chat": {
+    "bg": "#2c72c7",
+    "text": "#b0b8ff",
+    "opacity": 0.9,
+    "blur": 0,
+    "glow": 0
+  },
+  "corner_tl": {
+    "opacity": 0.65,
+    "blur": 0
+  },
+  "corner_br": {
+    "opacity": 1.0,
+    "blur": 0
+  },
+  "header_left": {
+    "bg": "#181a1f",
+    "opacity": 0.8,
+    "blur": 0,
+    "glow": 0
+  },
+  "header_right": {
+    "bg": "#181a1f",
+    "opacity": 0.8,
+    "blur": 0,
+    "glow": 0
+  },
+  "loading": {
+    "opacity": 1.0,
+    "blur": 0
+  },
+  "assets": {
+    "loadingScreen": "assets/Pocoyo/Pocoyo-loading.gif",
+    "sidebarLogo": "assets/Pocoyo/Pocoyo-sidebar.gif",
+    "cornerTL": "assets/Pocoyo/Pocoyo-cornertl.gif",
+    "cornerBR": "assets/Pocoyo/Pocoyo-cornerbr.gif",
+    "headerLeft": "assets/Pocoyo/Pocoyo-headerleft.gif",
+    "headerRight": "assets/Pocoyo/Pocoyo-headerright.gif"
+  },
+  "background": {
+    "overlay": "#000000",
+    "opacity": 0.4,
+    "blur": 0
+  }
+}

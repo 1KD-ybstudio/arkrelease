@@ -1,0 +1,63 @@
+{
+  "name": "bubu",
+  "colors": {
+    "bg-deep": "#ffffff",
+    "primary": "#c4a37a",
+    "secondary": "#fafaff",
+    "text": "#fafafa",
+    "text-muted": "#a1a1aa"
+  },
+  "sidebar": {
+    "color": "#121418"
+  },
+  "glass": {
+    "blur": 0,
+    "vibrancy": 50,
+    "opacity": 0.2,
+    "shadow": 9
+  },
+  "chat": {
+    "bg": "#d9b273",
+    "text": "#fae0af",
+    "opacity": 0.9,
+    "blur": 0,
+    "glow": 0
+  },
+  "corner_tl": {
+    "opacity": 1.0,
+    "blur": 0
+  },
+  "corner_br": {
+    "opacity": 1.0,
+    "blur": 0
+  },
+  "header_left": {
+    "bg": "#bdac6d",
+    "opacity": 0.8,
+    "blur": 0,
+    "glow": 0
+  },
+  "header_right": {
+    "bg": "#cfb77c",
+    "opacity": 0.8,
+    "blur": 0,
+    "glow": 0
+  },
+  "loading": {
+    "opacity": 1.0,
+    "blur": 0
+  },
+  "assets": {
+    "loadingScreen": "assets/bubu/bubu-loading.gif",
+    "sidebarLogo": "assets/bubu/bubu-sidebar.gif",
+    "cornerTL": "assets/bubu/bubu-cornertl.gif",
+    "cornerBR": "assets/bubu/bubu-cornerbr.gif",
+    "headerLeft": "assets/bubu/bubu-headerleft.gif",
+    "headerRight": "assets/bubu/bubu-headerright.gif"
+  },
+  "background": {
+    "overlay": "#000000",
+    "opacity": 0.0,
+    "blur": 0
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "name": "cinnamon",
+  "colors": {
+    "bg-deep": "#cfe4ff",
+    "primary": "#ffe8ff",
+    "secondary": "#a5a1ff",
+    "text": "#fafafa",
+    "text-muted": "#a1a1aa"
+  },
+  "sidebar": {
+    "color": "#121418"
+  },
+  "glass": {
+    "blur": 12,
+    "vibrancy": 180,
+    "opacity": 0.8,
+    "shadow": 32
+  },
+  "chat": {
+    "bg": "#ffdef0",
+    "text": "#695568",
+    "opacity": 0.9,
+    "blur": 3,
+    "glow": 14
+  },
+  "corner_tl": {
+    "opacity": 1.0,
+    "blur": 0
+  },
+  "corner_br": {
+    "opacity": 1.0,
+    "blur": 0
+  },
+  "header_left": {
+    "bg": "#181a1f",
+    "opacity": 0.8,
+    "blur": 0,
+    "glow": 0
+  },
+  "header_right": {
+    "bg": "#181a1f",
+    "opacity": 0.8,
+    "blur": 0,
+    "glow": 0
+  },
+  "loading": {
+    "opacity": 1.0,
+    "blur": 0
+  },
+  "assets": {
+    "loadingScreen": "assets/cinnamon/cinnamon-loading.gif",
+    "sidebarLogo": "assets/cinnamon/cinnamon-sidebar.gif",
+    "cornerTL": "assets/cinnamon/cinnamon-cornertl.gif",
+    "cornerBR": "assets/cinnamon/cinnamon-cornerbr.gif",
+    "headerLeft": "assets/cinnamon/cinnamon-headerleft.gif",
+    "headerRight": "assets/cinnamon/cinnamon-headerright.gif"
+  },
+  "background": {
+    "overlay": "#000000",
+    "opacity": 0.4,
+    "blur": 0
+  }
+}

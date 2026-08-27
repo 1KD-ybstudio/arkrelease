@@ -1,0 +1,63 @@
+{
+  "name": "snupi",
+  "colors": {
+    "bg-deep": "#ece8ff",
+    "primary": "#474747",
+    "secondary": "#babadb",
+    "text": "#fafafa",
+    "text-muted": "#ffffff"
+  },
+  "sidebar": {
+    "color": "#7886a1"
+  },
+  "glass": {
+    "blur": 5,
+    "vibrancy": 122,
+    "opacity": 0.2,
+    "shadow": 5
+  },
+  "chat": {
+    "bg": "#e8e6ff",
+    "text": "#303030",
+    "opacity": 0.9,
+    "blur": 8,
+    "glow": 0
+  },
+  "corner_tl": {
+    "opacity": 1.0,
+    "blur": 0
+  },
+  "corner_br": {
+    "opacity": 1.0,
+    "blur": 0
+  },
+  "header_left": {
+    "bg": "#181a1f",
+    "opacity": 0.8,
+    "blur": 0,
+    "glow": 0
+  },
+  "header_right": {
+    "bg": "#181a1f",
+    "opacity": 0.8,
+    "blur": 0,
+    "glow": 0
+  },
+  "loading": {
+    "opacity": 1.0,
+    "blur": 0
+  },
+  "assets": {
+    "loadingScreen": "assets/snupi/snupi-loading.gif",
+    "sidebarLogo": "assets/snupi/snupi-sidebar.gif",
+    "cornerTL": "assets/snupi/snupi-cornertl.gif",
+    "cornerBR": "assets/snupi/snupi-cornerbr.gif",
+    "headerLeft": "assets/snupi/snupi-headerleft.gif",
+    "headerRight": "assets/snupi/snupi-headerright.gif"
+  },
+  "background": {
+    "overlay": "#000000",
+    "opacity": 0.4,
+    "blur": 18
+  }
+}

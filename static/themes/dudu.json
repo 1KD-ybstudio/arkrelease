@@ -1,0 +1,63 @@
+{
+  "name": "dudu",
+  "colors": {
+    "bg-deep": "#947159",
+    "primary": "#ffeae0",
+    "secondary": "#ffd399",
+    "text": "#fafafa",
+    "text-muted": "#a1a1aa"
+  },
+  "sidebar": {
+    "color": "#121418"
+  },
+  "glass": {
+    "blur": 24,
+    "vibrancy": 180,
+    "opacity": 0.8,
+    "shadow": 32
+  },
+  "chat": {
+    "bg": "#ffd4a8",
+    "text": "#705f52",
+    "opacity": 0.9,
+    "blur": 0,
+    "glow": 0
+  },
+  "corner_tl": {
+    "opacity": 1.0,
+    "blur": 0
+  },
+  "corner_br": {
+    "opacity": 1.0,
+    "blur": 0
+  },
+  "header_left": {
+    "bg": "#181a1f",
+    "opacity": 0.8,
+    "blur": 0,
+    "glow": 0
+  },
+  "header_right": {
+    "bg": "#181a1f",
+    "opacity": 0.8,
+    "blur": 0,
+    "glow": 0
+  },
+  "loading": {
+    "opacity": 1.0,
+    "blur": 0
+  },
+  "assets": {
+    "loadingScreen": "assets/dudu/dudu-loading.gif",
+    "sidebarLogo": "assets/dudu/dudu-sidebar.gif",
+    "cornerTL": "assets/dudu/dudu-cornertl.gif",
+    "cornerBR": "assets/dudu/dudu-cornerbr.gif",
+    "headerLeft": "assets/dudu/dudu-headerleft.gif",
+    "headerRight": "assets/dudu/dudu-headerright.gif"
+  },
+  "background": {
+    "overlay": "#000000",
+    "opacity": 0.4,
+    "blur": 0
+  }
+}
