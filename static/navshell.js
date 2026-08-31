@@ -263,8 +263,16 @@
 
   function goGlobalHome() {
     var st = appState();
-    if (st) { st.currentGuild = null; if (typeof saveAppState === 'function') saveAppState(); }
+    if (st) { 
+      st.currentGuild = null; 
+      if (typeof saveAppState === 'function') saveAppState(); 
+    }
     localStorage.setItem('ns_global', 'home');
+    try { 
+      history.replaceState(null, '', window.location.pathname + window.location.search + '#home'); 
+    } catch(e) { 
+      window.location.hash = 'home'; 
+    }
     go('home');
   }
 
