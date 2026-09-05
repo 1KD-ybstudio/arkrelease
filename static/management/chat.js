@@ -35,6 +35,14 @@
   document.head.appendChild(st);
 })();
 
+var CHAT_IS_MOBILE = (function () {
+    try {
+        return /Mobi|Android|iPhone|iPad|iPod|webOS/i.test(navigator.userAgent) || window.matchMedia('(pointer: coarse)').matches;
+    } catch (e) {
+        return false;
+    }
+})();
+
 let currentProfileUserId = null;
 let mentionPopupItems = [];
 let mentionPopupVisible = false, mentionFilter = '', mentionSelectedIndex = -1;
@@ -171,7 +179,11 @@ async function startMicBroadcast() {
       micNode.port.onmessage = function (e) {
         if (e.data && e.data.buffer) socket.emit('mic_audio', e.data.buffer);
       };
+      const silent = micContext.createGain();
+      silent.gain.value = 0;
       source.connect(micNode);
+      micNode.connect(silent);
+      silent.connect(micContext.destination);
     } else {
       micNode = micContext.createScriptProcessor(4096, 1, 1);
       micNode.onaudioprocess = function (event) {
@@ -203,6 +215,8 @@ async function startMicBroadcast() {
     } else {
       pushNotification('Mic access denied', '', 'error', 2000);
     }
+  } finally {
+    micStarting = false;
   }
 }
 function stopMicBroadcast(silent) {
@@ -214,7 +228,11 @@ function stopMicBroadcast(silent) {
   if (!silent) pushNotification('Microphone stopped', '', 'info', 2000);
 }
 function toggleMic() {
-  pushNotification('Voice microphone is currently disabled. You can still use the VC text chat.', '', 'warning', 4000);
+    if (micActive) {
+        stopMicBroadcast();
+    } else {
+        startMicBroadcast();
+    }
 }
 function updateMicButton() {
   const btn = document.getElementById('vc-btn-mic') || document.getElementById('vc-btn-mic-header');
@@ -438,9 +456,9 @@ function setupChatLayout() {
         typingTimer = setTimeout(function () { typingTimer = null; }, 2000);
       }
     });
-    if (ta && isMobileDevice) ta.setAttribute('enterkeyhint', 'enter');
+    if (ta && CHAT_IS_MOBILE) ta.setAttribute('enterkeyhint', 'enter');
     ta.addEventListener('keydown', function (e) {
-      if ((e.key === 'Enter' || e.keyCode === 13) && !e.shiftKey && !isMobileDevice) {
+      if ((e.key === 'Enter' || e.keyCode === 13) && !e.shiftKey && !CHAT_IS_MOBILE) {
         e.preventDefault();
         e.stopPropagation();
         sendChatMessage();
@@ -1935,9 +1953,9 @@ document.addEventListener('touchend', function (e) {
   const wrapper = touchState.wrapper;
   const dx = (e.changedTouches[0]?.clientX || touchState.startX) - touchState.startX;
   const isOwn = AppState.botInfo && wrapper.dataset.authorId === AppState.botInfo.id;
-  const threshold = isMobileDevice ? 180 : 200;
+  const threshold = CHAT_IS_MOBILE ? 180 : 200;
   if (dx > threshold && isOwn) editMessage(touchState.msgId);
-  else if (dx > (isMobileDevice ? 100 : 120)) setReplyTarget(touchState.msgId);
+  else if (dx > (CHAT_IS_MOBILE ? 100 : 120)) setReplyTarget(touchState.msgId);
   wrapper.style.transform = '';
   const indicator = wrapper.querySelector('.swipe-indicator');
   if (indicator) indicator.style.width = '0';
