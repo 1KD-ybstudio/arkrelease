@@ -108,24 +108,25 @@ function localVersion() {
 async function fetchRemoteInfo(src) {
     const pkgUrl = `https://raw.githubusercontent.com/${src.owner}/${src.repo}/${src.branch}/package.json`;
     const commitUrl = `https://api.github.com/repos/${src.owner}/${src.repo}/commits?sha=${src.branch}&per_page=1`;
-    let version = '0.0.0';
     let commitMsg = '';
+    const pkgRes = await fetch(pkgUrl, { headers: { 'User-Agent': 'Arklum-Updater' } });
+    if (!pkgRes.ok) {
+        throw new Error(`Remote version check failed: ${pkgRes.status}. Is the repo public?`);
+    }
+    const pkg = JSON.parse(await pkgRes.text());
+    const version = pkg.version || '0.0.0';
     try {
-        const pkgRes = await fetch(pkgUrl, { headers: { 'User-Agent': 'Arklum-Updater' } });
-        if (pkgRes.ok) {
-            const pkg = JSON.parse(await pkgRes.text());
-            version = pkg.version || '0.0.0';
-        }
-    } catch {}
-    try {
-        const commitRes = await fetch(commitUrl, { headers: { 'User-Agent': 'Arklum-Updater', 'Accept': 'application/vnd.github.v3+json' } });
+        const commitRes = await fetch(commitUrl, { headers: { 'User-Agent': 'Arklum-Updater', 'Accept': 'application/vnd.github+json' } });
         if (commitRes.ok) {
             const commits = JSON.parse(await commitRes.text());
-            if (Array.isArray(commits) && commits.length > 0) {
-                commitMsg = commits[0].commit?.message || '';
+            if (Array.isArray(commits) && commits.length > 0 && commits[0].commit) {
+                let line = String(commits[0].commit.message || '').split('\n')[0];
+                const dash = line.indexOf(' — ');
+                if (dash !== -1) line = line.slice(dash + 3);
+                commitMsg = line;
             }
         }
-    } catch {}
+    } catch (e) {}
     return { version, commitMsg };
 }
 
@@ -336,6 +337,7 @@ async function doUpdate(options = {}) {
       to: clonedVersion,
       written,
       backup: relPath(backupDir),
+      commitMsg: info.commitMsg,
       installed: installed.slice(0, 25)
     });
     return;

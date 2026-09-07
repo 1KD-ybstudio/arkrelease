@@ -38,11 +38,12 @@ registerCommand('check_for_update')(async (params, { socket }) => {
     if (r.updateAvailable) {
       logger.info('[UPDATER] update available v' + r.current + ' → v' + r.latest);
       socket.emit('update_available', {
-        current: r.current,
-        latest: r.latest,
-        zip_url: '',
-        notes: 'Update available. You can dismiss this and update later.'
-      });
+       current: r.current,
+       latest: r.latest,
+       zip_url: '',
+       commitMsg: r.commitMsg || '',
+       notes: r.commitMsg || 'Update available. You can dismiss this and update later.'
+     });
     } else {
       socket.emit('update_not_available', {
         message: 'Up to date (v' + r.current + ').'

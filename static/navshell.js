@@ -1016,3 +1016,93 @@
 
   forceHomeContext();
 })();
+(function () {
+    if (window.__nsUpdateModalReady) return;
+    window.__nsUpdateModalReady = true;
+    var payload = null;
+
+    function cssOnce() {
+        if (document.getElementById('ns-upd-css')) return;
+        var st = document.createElement('style');
+        st.id = 'ns-upd-css';
+        st.textContent =
+            '.ns-upd-btns{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}' +
+            '.ns-upd-btns button{border:none;border-radius:12px;padding:12px 18px;font-weight:800;font-size:14px;cursor:pointer;color:#fff}' +
+            '.ns-upd-btns .how{background:linear-gradient(135deg,#38bdf8,#454af8)}' +
+            '.ns-upd-btns .det{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15)}' +
+            '#ns-upd-panel{margin-top:14px;text-align:left;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 14px;font-size:13px;line-height:1.7;display:none;white-space:pre-wrap}' +
+            '#ns-upd-panel code{background:rgba(255,255,255,.1);border-radius:6px;padding:2px 6px;font-family:monospace}';
+        document.head.appendChild(st);
+    }
+
+    function modalCard() {
+        var cands = [];
+        var all = document.querySelectorAll('div,section');
+        for (var i = 0; i < all.length; i++) {
+            var el = all[i];
+            var t = el.textContent || '';
+            if (/Update Required/i.test(t) && /new version is available/i.test(t)) cands.push(el);
+        }
+        if (!cands.length) return null;
+        cands.sort(function (a, b) { return a.textContent.length - b.textContent.length; });
+        return cands[0];
+    }
+
+    function versionKey() {
+        if (!payload) return 'static';
+        return String(payload.current) + '>' + String(payload.latest);
+    }
+
+    function render() {
+        var card = modalCard();
+        if (!card) return;
+        if (card.offsetParent === null) return;
+        var key = versionKey();
+        if (card.getAttribute('data-ns-upd') === key) return;
+        card.setAttribute('data-ns-upd', key);
+        cssOnce();
+        var cur = payload ? payload.current : '?';
+        var lat = payload ? payload.latest : '?';
+        card.innerHTML =
+            '<h2 style="margin:0 0 6px;font-size:1.6rem;color:#00d4aa;text-align:center">Update Required</h2>' +
+            '<p style="text-align:center;margin:0 0 10px">A new version is available.</p>' +
+            '<p style="text-align:center;font-size:1.3rem;font-weight:800;margin:0">' + cur + ' <span style="color:#00d4aa">→</span> <span style="color:#00d4aa">' + lat + '</span></p>' +
+            '<div class="ns-upd-btns">' +
+            '<button class="how" onclick="nsUpdHow()">How to update</button>' +
+            '<button class="det" onclick="nsUpdDetails()">Details</button>' +
+            '</div>' +
+            '<div id="ns-upd-panel"></div>';
+    }
+
+    window.nsUpdHow = function () {
+        var p = document.getElementById('ns-upd-panel');
+        if (!p) return;
+        p.style.display = 'block';
+        p.innerHTML =
+            '1. Turn off Arklum (stop the process / close the terminal).\n' +
+            '2. Run <code>1kd check</code> to check for updates.\n' +
+            '3. Run <code>1kd update</code> to update Arklum.\n' +
+            '4. Start Arklum again with <code>npm start</code>.';
+    };
+
+    window.nsUpdDetails = function () {
+        var p = document.getElementById('ns-upd-panel');
+        if (!p) return;
+        p.style.display = 'block';
+        var c = payload ? (payload.commitMsg || payload.notes || '') : '';
+        p.textContent = c ? ('Commit: ' + c) : 'No commit details for this release.';
+    };
+
+    if (window.socket) {
+        socket.on('update_available', function (d) {
+            payload = d;
+            setTimeout(render, 150);
+            setTimeout(render, 900);
+        });
+    }
+
+    setInterval(function () {
+        var card = modalCard();
+        if (card && card.offsetParent !== null) render();
+    }, 1200);
+})();
