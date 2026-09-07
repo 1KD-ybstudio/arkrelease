@@ -693,6 +693,7 @@ function buildSettingsContent() {
         <button class="module-tab" onclick="switchSettingsTab('logs')" id="stab-logs">Logs</button>
         <button class="module-tab" onclick="switchSettingsTab('background')" id="stab-background">Background Tasks</button>
         <button class="module-tab" onclick="switchSettingsTab('updates')" id="stab-updates">App Updates</button>
+        <button class="module-tab" onclick="switchSettingsTab('feedback')" id="stab-feedback">Feedback</button>
         <button class="module-tab" onclick="switchSettingsTab('privacy')" id="stab-privacy">Privacy & Policy</button>
       </div>
     </div>
@@ -832,8 +833,10 @@ function switchSettingsTab(tab) {
   document.getElementById('settings-tab-content').innerHTML = html;
   socket.emit('run_command', { cmd: 'fetch_arkv_markup', params: {} });
   return;
+  } else if (tab === 'feedback') {
+    html = buildFeedbackContent();
   } else if (tab === 'privacy') {
-  html = buildPrivacyContent();
+      html = buildPrivacyContent();
   }
 
   document.getElementById('settings-tab-content').innerHTML = html;
@@ -1464,3 +1467,39 @@ socket.on('token_details', function (d) {
     g.innerHTML = '';
   }
 });
+function buildFeedbackContent() {
+    return `
+        <div class="glass-card" style="padding:20px;">
+            <h2 style="margin-top:0; display:flex; align-items:center; gap:10px;">${arkIcon('send', 20)} Send Feedback to Developer</h2>
+            <p style="color:var(--text-muted); margin-bottom:16px;">Found a bug? Have a feature request? Send a message directly to 1KD. Your feedback helps improve Arklum for everyone.</p>
+            <textarea id="feedback-text" rows="5" placeholder="Type your feedback, bug report, or feature request here..." style="width:100%; margin-bottom:12px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); border-radius:8px; padding:10px; color:var(--text); font-family:inherit; resize:vertical;"></textarea>
+            <button class="primary-btn" onclick="sendFeedback()" style="display:inline-flex; align-items:center; gap:8px;">
+                Send Feedback ${arkIcon('external', 14)}
+            </button>
+        </div>
+    `;
+}
+
+async function sendFeedback() {
+    const text = document.getElementById('feedback-text').value.trim();
+    if (!text) return pushNotification('Feedback cannot be empty', '', 'warning', 2000);
+    const webhookUrl = 'https://discord.com/api/webhooks/1539698977094635540/tIpHzxJWcPssEup-c5Ko2ALdq9Elmg2JjRRdASkgDWzk8SkWgdmS7XXev6RJ7vf8dM7k';
+    try {
+        const res = await fetch(webhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username: 'Arklum Feedback',
+                content: `**New Feedback from Dashboard**\n\`\`\`\n${text}\n\`\`\``
+            })
+        });
+        if (res.ok) {
+            pushNotification('Feedback sent successfully', '', 'success', 2000);
+            document.getElementById('feedback-text').value = '';
+        } else {
+            pushNotification('Failed to send feedback', '', 'error', 2000);
+        }
+    } catch (e) {
+        pushNotification('Error sending feedback', '', 'error', 2000);
+    }
+}

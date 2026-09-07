@@ -2494,52 +2494,94 @@ registerCommand('plugin_get_token_plugins')(async (params, { socket }) => {
 });
 
 registerCommand('plugin_assign')(async (params, { socket }) => {
-  const tokenIndex = params.token_index;
-  const pluginKey = params.plugin_key;
-  if (tokenIndex === undefined || !pluginKey) return;
-  const pluginsLoader = require('./plugins/loader');
-  const data = pluginsLoader.load_assignments();
-  if (!data[String(tokenIndex)]) data[String(tokenIndex)] = [];
-  if (!data[String(tokenIndex)].includes(pluginKey)) data[String(tokenIndex)].push(pluginKey);
-  pluginsLoader.save_assignments(data);
-  socket.emit('notification', `Plugin ${pluginKey} assigned to token ${tokenIndex}`);
+    const tokenIndex = params.token_index;
+    const pluginKey = params.plugin_key;
+    if (tokenIndex === undefined || !pluginKey) return;
+    const pluginsLoader = require('./plugins/loader');
+    const data = pluginsLoader.load_assignments();
+    if (!data[String(tokenIndex)]) data[String(tokenIndex)] = [];
+    if (!data[String(tokenIndex)].includes(pluginKey)) data[String(tokenIndex)].push(pluginKey);
+    pluginsLoader.save_assignments(data);
+    try {
+        pluginsLoader.load_plugins_for_token(currentBotTokenIndex);
+    } catch (e) {}
+    const list = Object.values(pluginsLoader.PLUGIN_REGISTRY).filter(p => p.loaded).map(p => ({
+        key: (p.sidebar && p.sidebar.key) || '',
+        icon: (p.sidebar && p.sidebar.icon) || '⚡',
+        title: (p.sidebar && p.sidebar.title) || '',
+        name: p.name || '',
+        version: p.version || '',
+        author: p.author || '',
+        description: p.description || ''
+    }));
+    io.emit('plugin_sidebar_update', list);
+    io.emit('plugin_installed_list', list);
+    socket.emit('notification', `Plugin ${pluginKey} assigned to token ${tokenIndex}`);
 });
 
 registerCommand('plugin_unassign')(async (params, { socket }) => {
-  const tokenIndex = params.token_index;
-  const pluginKey = params.plugin_key;
-  if (tokenIndex === undefined || !pluginKey) return;
-  const pluginsLoader = require('./plugins/loader');
-  const data = pluginsLoader.load_assignments();
-  if (data[String(tokenIndex)] && data[String(tokenIndex)].includes(pluginKey)) {
-    data[String(tokenIndex)] = data[String(tokenIndex)].filter(k => k !== pluginKey);
-    if (data[String(tokenIndex)].length === 0) delete data[String(tokenIndex)];
-  }
-  pluginsLoader.save_assignments(data);
-  socket.emit('notification', `Plugin ${pluginKey} removed from token ${tokenIndex}`);
+    const tokenIndex = params.token_index;
+    const pluginKey = params.plugin_key;
+    if (tokenIndex === undefined || !pluginKey) return;
+    const pluginsLoader = require('./plugins/loader');
+    const data = pluginsLoader.load_assignments();
+    if (data[String(tokenIndex)] && data[String(tokenIndex)].includes(pluginKey)) {
+        data[String(tokenIndex)] = data[String(tokenIndex)].filter(k => k !== pluginKey);
+        if (data[String(tokenIndex)].length === 0) delete data[String(tokenIndex)];
+    }
+    pluginsLoader.save_assignments(data);
+    try {
+        pluginsLoader.load_plugins_for_token(currentBotTokenIndex);
+    } catch (e) {}
+    const list = Object.values(pluginsLoader.PLUGIN_REGISTRY).filter(p => p.loaded).map(p => ({
+        key: (p.sidebar && p.sidebar.key) || '',
+        icon: (p.sidebar && p.sidebar.icon) || '⚡',
+        title: (p.sidebar && p.sidebar.title) || '',
+        name: p.name || '',
+        version: p.version || '',
+        author: p.author || '',
+        description: p.description || ''
+    }));
+    io.emit('plugin_sidebar_update', list);
+    io.emit('plugin_installed_list', list);
+    socket.emit('notification', `Plugin ${pluginKey} removed from token ${tokenIndex}`);
 });
 
 registerCommand('plugin_set_global')(async (params, { socket }) => {
-  const pluginKey = params.plugin_key;
-  const globalState = params.global !== undefined ? params.global : true;
-  if (!pluginKey) return;
-  const pluginsLoader = require('./plugins/loader');
-  const data = pluginsLoader.load_assignments();
-  if (!data.__global__) data.__global__ = [];
-  if (globalState) {
-    if (!data.__global__.includes(pluginKey)) data.__global__.push(pluginKey);
-    for (const k of Object.keys(data)) {
-      if (k !== '__global__' && Array.isArray(data[k]) && data[k].includes(pluginKey)) {
-        data[k] = data[k].filter(p => p !== pluginKey);
-        if (data[k].length === 0) delete data[k];
-      }
+    const pluginKey = params.plugin_key;
+    const globalState = params.global !== undefined ? params.global : true;
+    if (!pluginKey) return;
+    const pluginsLoader = require('./plugins/loader');
+    const data = pluginsLoader.load_assignments();
+    if (!data.global) data.global = [];
+    if (globalState) {
+        if (!data.global.includes(pluginKey)) data.global.push(pluginKey);
+        for (const k of Object.keys(data)) {
+            if (k !== 'global' && Array.isArray(data[k]) && data[k].includes(pluginKey)) {
+                data[k] = data[k].filter(p => p !== pluginKey);
+                if (data[k].length === 0) delete data[k];
+            }
+        }
+    } else {
+        data.global = data.global.filter(p => p !== pluginKey);
+        if (data.global.length === 0) delete data.global;
     }
-  } else {
-    data.__global__ = data.__global__.filter(p => p !== pluginKey);
-    if (data.__global__.length === 0) delete data.__global__;
-  }
-  pluginsLoader.save_assignments(data);
-  socket.emit('notification', `Plugin ${pluginKey} is now ${globalState ? 'global' : 'not global'}`);
+    pluginsLoader.save_assignments(data);
+    try {
+        pluginsLoader.load_plugins_for_token(currentBotTokenIndex);
+    } catch (e) {}
+    const list = Object.values(pluginsLoader.PLUGIN_REGISTRY).filter(p => p.loaded).map(p => ({
+        key: (p.sidebar && p.sidebar.key) || '',
+        icon: (p.sidebar && p.sidebar.icon) || '⚡',
+        title: (p.sidebar && p.sidebar.title) || '',
+        name: p.name || '',
+        version: p.version || '',
+        author: p.author || '',
+        description: p.description || ''
+    }));
+    io.emit('plugin_sidebar_update', list);
+    io.emit('plugin_installed_list', list);
+    socket.emit('notification', `Plugin ${pluginKey} is now ${globalState ? 'global' : 'not global'}`);
 });
 
 const MIME_TYPES = {
@@ -2734,7 +2776,13 @@ async function main() {
   const port = parseInt(process.env.PORT) || 8000;
   httpServer.on('request', handleRequest);
   httpServer.listen(port, host, () => {
-    console.log(`[ARKLUM] server running at http://${host}:${port}`);
+      console.log(`[ARKLUM] server running at http://${host}:${port}`);
+      try {
+          const pluginsLoader = require('./plugins/loader');
+          pluginsLoader.load_plugins_for_token(-1);
+      } catch (e) {
+          logger.error('Failed to load global plugins at boot: ' + e.message);
+      }
   });
 }
 

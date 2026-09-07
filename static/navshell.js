@@ -34,7 +34,8 @@
     '.nsr-add{color:var(--primary,#454af8);font-size:18px;border-style:dashed;position:sticky;bottom:0;background:rgba(11,13,20,.97)}' +
     '.nsr-sep{width:32px;height:1px;background:var(--glass-border,rgba(255,255,255,.1));flex-shrink:0}' +
     '#ns-rail{position:fixed;left:64px;top:0;bottom:0;width:68px;background:rgba(13,15,22,.97);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-right:1px solid var(--glass-border,rgba(255,255,255,.1));z-index:910;display:none;flex-direction:column;padding:12px 8px;gap:8px;overflow-y:auto;overflow-x:hidden;transition:width .25s cubic-bezier(.4,0,.2,1)}' +
-    '#ns-rail:hover,#ns-rail.pinned{width:236px;align-items:stretch}' +
+    '#ns-rail:hover{width:236px;align-items:stretch;transition-delay:1.5s}' +
+    '#ns-rail.pinned{width:236px;align-items:stretch}' +
     '#ns-rail:not(:hover):not(.pinned){align-items:center}' +
     '.ns-head{display:flex;align-items:center;gap:10px;min-height:42px;height:42px;padding:0;box-sizing:border-box;justify-content:center;width:44px}' +
     '#ns-rail:hover .ns-head,#ns-rail.pinned .ns-head{justify-content:flex-start;width:auto}' +

@@ -137,22 +137,23 @@ async function dmAnnounceTask(guildId, members, message, batchSize, speed, socke
     }
 
     const batch = members.slice(index, index + batchSize);
-    await Promise.all(batch.map(async member => {
-      for (let attempt = 0; attempt < 2; attempt++) {
-        try {
-          await member.send(message);
-          success++;
-          break;
-        } catch (e) {
-          if (e.status === 429 && attempt === 0) {
-            await new Promise(resolve => setTimeout(resolve, e.retryAfter || 1000));
-            continue;
-          }
-          failed++;
-          break;
+    for (const member of batch) {
+        for (let attempt = 0; attempt < 2; attempt++) {
+            try {
+                await member.send(message);
+                success++;
+                break;
+            } catch (e) {
+                if (e.status === 429 && attempt === 0) {
+                    await new Promise(resolve => setTimeout(resolve, (e.retryAfter || 1000) + 500));
+                    continue;
+                }
+                failed++;
+                break;
+            }
         }
-      }
-    }));
+        await new Promise(resolve => setTimeout(resolve, 1000));
+    }
 
     index += batchSize;
     if (index < total) await new Promise(resolve => setTimeout(resolve, speed * 1000));

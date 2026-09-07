@@ -105,16 +105,28 @@ function localVersion() {
   }
 }
 
-async function remoteVersion(src) {
-  const url = `https://raw.githubusercontent.com/${src.owner}/${src.repo}/${src.branch}/package.json`;
-  const res = await fetch(url, { headers: { 'User-Agent': 'Arklum-Updater' } });
-
-  if (!res.ok) {
-    throw new Error(`Remote version check failed: ${res.status}. Is the repo public?`);
-  }
-
-  const pkg = JSON.parse(await res.text());
-  return pkg.version || '0.0.0';
+async function fetchRemoteInfo(src) {
+    const pkgUrl = `https://raw.githubusercontent.com/${src.owner}/${src.repo}/${src.branch}/package.json`;
+    const commitUrl = `https://api.github.com/repos/${src.owner}/${src.repo}/commits?sha=${src.branch}&per_page=1`;
+    let version = '0.0.0';
+    let commitMsg = '';
+    try {
+        const pkgRes = await fetch(pkgUrl, { headers: { 'User-Agent': 'Arklum-Updater' } });
+        if (pkgRes.ok) {
+            const pkg = JSON.parse(await pkgRes.text());
+            version = pkg.version || '0.0.0';
+        }
+    } catch {}
+    try {
+        const commitRes = await fetch(commitUrl, { headers: { 'User-Agent': 'Arklum-Updater', 'Accept': 'application/vnd.github.v3+json' } });
+        if (commitRes.ok) {
+            const commits = JSON.parse(await commitRes.text());
+            if (Array.isArray(commits) && commits.length > 0) {
+                commitMsg = commits[0].commit?.message || '';
+            }
+        }
+    } catch {}
+    return { version, commitMsg };
 }
 
 function cleanClone() {
@@ -242,22 +254,21 @@ async function cloneLatest(src) {
 }
 
 async function doCheck() {
-  ensureProjectRoot();
-
-  const src = getSource();
-  const current = localVersion();
-  const latest = await remoteVersion(src);
-
-  const available = latest !== current;
-
-  if (JSON_MODE) {
-    json({
-      ok: true,
-      current,
-      latest,
-      updateAvailable: available,
-      source: src
-    });
+    ensureProjectRoot();
+    const src = getSource();
+    const current = localVersion();
+    const info = await fetchRemoteInfo(src);
+    const latest = info.version;
+    const available = latest !== current;
+    if (JSON_MODE) {
+        json({
+            ok: true,
+            current,
+            latest,
+            commitMsg: info.commitMsg,
+            updateAvailable: available,
+            source: src
+        });
     return;
   }
 
@@ -267,17 +278,16 @@ async function doCheck() {
 }
 
 async function doUpdate(options = {}) {
-  ensureProjectRoot();
-  ensureSystemDirs();
-  await ensureGit();
-
-  const src = getSource();
-  const current = localVersion();
-  const latest = await remoteVersion(src);
-
-  if (!options.force && latest === current) {
-    if (JSON_MODE) {
-      json({ ok: true, changed: false, current, latest, message: 'Already up to date.' });
+    ensureProjectRoot();
+    ensureSystemDirs();
+    await ensureGit();
+    const src = getSource();
+    const current = localVersion();
+    const info = await fetchRemoteInfo(src);
+    const latest = info.version;
+    if (!options.force && latest === current) {
+        if (JSON_MODE) {
+            json({ ok: true, changed: false, current, latest, commitMsg: info.commitMsg, message: 'Already up to date.' });
     } else {
       out(`already up to date (v${current})`);
     }

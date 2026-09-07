@@ -53,21 +53,24 @@ class PluginState {
 }
 
 class ArklumAPI {
-  constructor(bot, sio, pluginName, scopes) {
-    this.bot = bot; this.sio = sio;
-    this._pluginName = pluginName;
-    this._scopes = scopes || ['read', 'write', 'ui'];
-    this._state = null;
-    this.version = api.API_VERSION;
-    const base = logger;
-    const warn = base.warn ? base.warn.bind(base) : base.error.bind(base);
-    this.logger = {
-      info: (m) => base.info('[' + pluginName + '] ' + m),
-      warn: (m) => warn('[' + pluginName + '] ' + m),
-      error: (m) => base.error('[' + pluginName + '] ' + m)
-    };
-  }
-  _guard(fn, label) {
+    constructor(bot, sio, pluginName, scopes) {
+        this.sio = sio;
+        this._pluginName = pluginName;
+        this._scopes = scopes || ['read', 'write', 'ui'];
+        this._state = null;
+        this.version = api.API_VERSION;
+        const base = logger;
+        const warn = base.warn ? base.warn.bind(base) : base.error.bind(base);
+        this.logger = {
+            info: (m) => base.info('[' + pluginName + '] ' + m),
+            warn: (m) => warn('[' + pluginName + '] ' + m),
+            error: (m) => base.error('[' + pluginName + '] ' + m)
+        };
+    }
+    get bot() {
+        return getBot();
+    }
+    _guard(fn, label) {
     const self = this;
     return function (...args) {
       try { return fn(...args); } catch (e) { self._fail(label, e); }
