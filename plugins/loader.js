@@ -68,7 +68,20 @@ class ArklumAPI {
         };
     }
     get bot() {
-        return getBot();
+        const real = getBot();
+        if (real) return real;
+        return new Proxy({}, {
+            get(target, prop) {
+                if (prop === 'guilds' || prop === 'users' || prop === 'channels' || prop === 'emojis' || prop === 'roles' || prop === 'messages') {
+                    return { cache: new Map(), fetch: async () => null, resolve: () => null };
+                }
+                if (prop === 'ws') return { ping: -1, status: 0, on: () => {}, off: () => {}, once: () => {} };
+                if (prop === 'on' || prop === 'once' || prop === 'off' || prop === 'emit' || prop === 'removeAllListeners' || prop === 'login') return () => {};
+                if (prop === 'isReady' || prop === 'isClient') return () => false;
+                if (prop === 'user' || prop === 'application') return null;
+                return undefined;
+            }
+        });
     }
     _guard(fn, label) {
     const self = this;

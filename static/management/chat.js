@@ -235,15 +235,22 @@ function toggleMic() {
     }
 }
 function updateMicButton() {
-  const btn = document.getElementById('vc-btn-mic') || document.getElementById('vc-btn-mic-header');
-  if (!btn) return;
-  if (micActive) {
-    btn.innerHTML = arkIcon('mic');
-    btn.style.background = 'rgba(255,255,255,.06)';
-   } else {
-    btn.innerHTML = arkIcon('mic-off');
-    btn.style.background = 'var(--danger,#f23f43)';
-  }
+  const btns = [
+    document.getElementById('vc-btn-mic'),
+    document.getElementById('vc-btn-mic-header'),
+    document.getElementById('mic-broadcast-btn')
+  ].filter(Boolean);
+  btns.forEach(function(btn) {
+    if (micActive) {
+      btn.innerHTML = arkIcon('mic');
+      btn.style.background = 'var(--danger,#f23f43)';
+      btn.style.color = '#fff';
+    } else {
+      btn.innerHTML = arkIcon('mic-off');
+      btn.style.background = 'rgba(255,255,255,.06)';
+      btn.style.color = 'var(--text-muted,#8b90a8)';
+    }
+  });
   var ms = document.getElementById('vc-mic-state');
   if (ms) ms.innerHTML = micActive ? arkIcon('mic', 14) : arkIcon('mic-off', 14);
 }
@@ -419,6 +426,7 @@ function setupChatLayout() {
     '<div class="chat-input-row" style="display:flex; gap:8px; align-items:center;">' +
     ' <button class="secondary-btn" onclick="document.getElementById(\'chat-attach\').click()" title="Attach">' + arkIcon('plus') + '</button>' +
     ' <button class="secondary-btn" id="emoji-btn" onclick="toggleEmojiPicker()" title="Emoji">' + arkIcon('react') + '</button>' +
+    ' <button class="secondary-btn" id="mic-broadcast-btn" onclick="toggleMic()" title="Broadcast Microphone">' + arkIcon('mic-off') + '</button>' +
     '<textarea id="chat-input" placeholder="Type a message..." rows="1" style="flex:1; resize:none; min-height:40px; max-height:150px; overflow-y:auto; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); border-radius:var(--radius-sm); color:var(--text); padding:10px 12px; font-family:inherit; font-size:0.9rem;"></textarea>' +
     ' <button class="primary-btn" onclick="sendChatMessage()" title="Send">' + arkIcon('send') + '</button>' +
     '</div>' +
