@@ -1,6 +1,6 @@
 {
   "name": "arklum",
-  "version": "3.0.28",
+  "version": "3.0.29",
   "private": true,
   "scripts": {
     "prestart": "node scripts/ensure-deps.js",
